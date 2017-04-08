@@ -22,7 +22,7 @@
   get_url:
     url="{{ oaut2_proxy_http }}"
     sha256sum="{{ oaut2_proxy_http_sha256 | default(omit) }}"
-    dest="{{ oauth2_dir_tmp }}"
+    dest="{{ oauth2_dir_tmp }}/{{ oauth2_compress_filename }}"
     owner="{{ oauth2_user }}"
 
 - name: unarchive oauth2 binary
