@@ -1,8 +1,8 @@
-# ansible-oauth2-proxy
-An ansible role to install [oauth2 proxy](https://github.com/bitly/oauth2_proxy) 
+# bitly OAuth2-proxy ansible role
 
-Variables
----------
+An ansible role to install and configure [oauth2 proxy](https://github.com/bitly/oauth2_proxy).
+
+## Variables
 
 ```yaml
 oaut2_proxy_http                         : "https://github.com/bitly/oauth2_proxy/releases/download/v2.0.1/oauth2_proxy-2.0.1.linux-amd64.go1.4.2.tar.gz"
@@ -19,7 +19,7 @@ oauth2_filename                          : "{{ oauth2_compress_filename |replace
 oauth2_proxy_config                      :
     http_address                         : "127.0.0.1:5000"
     upstreams                            : [ "127.0.0.1:6060" ]
-    provider                             : "github" 
+    provider                             : "github"
     email-domain                         : "*"
     cookie-secure                        : false
     cookie-domain                        : "localhost:5000"
@@ -30,15 +30,15 @@ oauth2_proxy_config                      :
 oauth2_config_cmdline_args               : "-github-org='MYCoolORg'"
 ```
 
-Development
---------
-You can use the [Vagrantfile](Vagrantfile) for local testing, just install vagrant and virtualbox and execute the following commands:
+## Development
+
+You can use the [Vagrantfile](Vagrantfile) for local testing, just install vagrant and virtualbox and execute the following commands.
 
 ````bash
 vagrant up
 vagrant provision
 ````
 
-License
---------
+## License
+
 MIT

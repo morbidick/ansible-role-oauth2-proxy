@@ -14,7 +14,7 @@ oauth2_filename                          : "{{ oauth2_compress_filename |replace
 oauth2_proxy_config                      :
     http_address                         : "127.0.0.1:5000"
     upstreams                            : [ "127.0.0.1:6060" ]
-    provider                             : "github" 
+    provider                             : "github"
     email-domain                         : "*"
     cookie-secure                        : false
     cookie-domain                        : "localhost:5000"
