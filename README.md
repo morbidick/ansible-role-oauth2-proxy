@@ -30,6 +30,14 @@ oauth2_proxy_config                      :
 oauth2_config_cmdline_args               : "-github-org='MYCoolORg'"
 ```
 
+Development
+--------
+You can use the [Vagrantfile](Vagrantfile) for local testing, just install vagrant and virtualbox and execute the following commands:
+
+````bash
+vagrant up
+vagrant provision
+````
 
 License
 --------
