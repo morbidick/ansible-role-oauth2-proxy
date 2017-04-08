@@ -1,5 +1,7 @@
 # bitly OAuth2-proxy ansible role
 
+[![Build Status](https://travis-ci.org/morbidick/ansible-role-oauth2-proxy.svg?branch=master)](https://travis-ci.org/morbidick/ansible-role-oauth2-proxy)
+
 An ansible role to install and configure [oauth2 proxy](https://github.com/bitly/oauth2_proxy).
 
 ## Variables
