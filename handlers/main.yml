@@ -2,5 +2,6 @@
 
 - name: oauth2-proxy restart
   service:
-    name: "oauth2-proxy"
+    name: "{{ oauth2_identifier }}"
     state: restarted
+  when: oauth2_init_system != False

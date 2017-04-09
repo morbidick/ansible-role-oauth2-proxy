@@ -11,6 +11,9 @@ before_install:
   # Reference: https://docs.ansible.com/ansible/become.html#becoming-an-unprivileged-user
   - sudo apt-get install acl -qq
 
+  # Install systemd required for the service file
+  - sudo apt-get install systemd -qq
+
 install:
   # Install Ansible
   - pip install ansible

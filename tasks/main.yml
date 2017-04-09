@@ -45,10 +45,20 @@
 - name: Deploy init.d script
   template:
     src: "init.d.sh.j2.sh"
-    dest: "/etc/init.d/oauth2-proxy"
+    dest: "/etc/init.d/{{ oauth2_identifier }}"
     mode: "0755"
   notify:
     - oauth2-proxy restart
+  when: oauth2_init_system == "sysv"
+
+- name: Deploy systemd unit file
+  template:
+    dest: "{{ oauth2_systemd_unit_path }}"
+    src: systemd.service.j2
+    # validate: "systemd-analyze verify %s" # see https://github.com/ansible/ansible/issues/19232
+  notify:
+    - oauth2-proxy restart
+  when: oauth2_init_system == "systemd"
 
 - name: Deploy Config
   template:
@@ -61,6 +71,7 @@
 
 - name: Service start
   service:
-    name: "oauth2-proxy"
+    name: "{{ oauth2_identifier }}"
     state: "started"
-    enabled: "True"
+    enabled: "yes"
+  when: oauth2_init_system != False
