@@ -1,6 +1,6 @@
 ---
 
-- name: Create the directories for site specific configurations
+- name: Create the daemon user
   user:
     name: "{{ oauth2_user }}"
     shell: "/bin/false"
