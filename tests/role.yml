@@ -3,3 +3,28 @@
 
   roles:
     - role_under_test
+
+  pre_tasks:
+    - name: create test directory
+      file:
+        path: "{{ oauth2_test_dir }}"
+        state: directory
+
+    - name: create sample file
+      copy:
+        content: "This file should be viewable after authentication."
+        dest: "{{ oauth2_test_dir }}/index.html"
+
+  vars:
+    oauth2_test_dir: "/var/www"
+
+    oauth2_proxy_config:
+        http_address: "0.0.0.0:5000"
+        upstreams: [ "file://{{ oauth2_test_dir }}/#/" ]
+        provider: "github"
+        email_domains: "*"
+        cookie_secure: false
+        cookie_domain: "localhost:5000"
+        cookie_secret: "{{ 'COOK_SECRET' | b64encode }}"
+        client_id: "YOUR_CLIENT_ID"
+        client_secret: "CLIENT_SECERET"

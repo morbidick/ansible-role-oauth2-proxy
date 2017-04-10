@@ -42,6 +42,8 @@ vagrant up
 vagrant provision
 ````
 
+To test the oauth2 procedure against Github create a new OAuth application in your [profile](https://github.com/settings/developers) with the homepage `http://127.0.0.1:5000` and callback url `http://127.0.0.1:5000/oauth2/callback`. Replace `client_id` and `client_secret` in [tests/role.yml](tests/role.yml) with the provided github tokens. Open your browser at [127.0.0.1:5000](http://127.0.0.1:5000)
+
 ## License
 
 MIT
