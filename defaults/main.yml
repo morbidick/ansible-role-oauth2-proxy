@@ -1,7 +1,7 @@
 ---
 
-oaut2_proxy_http                         : "https://github.com/bitly/oauth2_proxy/releases/download/v2.0.1/oauth2_proxy-2.0.1.linux-amd64.go1.4.2.tar.gz"
-oaut2_proxy_http_sha256                  : "c6d8f6d74e1958ce1688f3cf7d60648b9d0d6d4344d74c740c515a00b4e023ad"
+oaut2_proxy_http                         : "https://github.com/bitly/oauth2_proxy/releases/download/v2.1/oauth2_proxy-2.1.linux-amd64.go1.6.tar.gz"
+oaut2_proxy_http_sha256                  : "3061e5b04bd14eeb9ec0ad1c9b324ba8d99d50eaadc5f528cdf4d21043828298"
 oauth2_user                              : "oauth2"
 oauth2_dir                               : "/var/oauth2_proxy"
 oauth2_dir_tmp                           : "/var/oauth2_proxy/tmp"
@@ -18,10 +18,10 @@ oauth2_proxy_config                      :
     http_address                         : "127.0.0.1:5000"
     upstreams                            : [ "127.0.0.1:6060" ]
     provider                             : "github"
-    email-domain                         : "*"
-    cookie-secure                        : false
-    cookie-domain                        : "localhost:5000"
-    cookie_secret                        : "COOK_SECRET"
+    email_domains                        : "*"
+    cookie_secure                        : false
+    cookie_domain                        : "localhost:5000"
+    cookie_secret                        : "{{ 'COOK_SECRET' | b64encode }}"
     client_id                            : "YOUR_CLIENT_ID"
     client_secret                        : "CLIENT_SECERET"
 
