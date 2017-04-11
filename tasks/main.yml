@@ -4,7 +4,8 @@
   user:
     name: "{{ oauth2_user }}"
     shell: "/bin/false"
-    home: "{{ oauth2_dir }}"
+    home: false
+    system: true
 
 - name: Create the directories for site specific configurations
   file:
