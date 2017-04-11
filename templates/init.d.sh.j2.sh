@@ -24,8 +24,8 @@ SCRIPTNAME=/etc/init.d/oauth2-proxy
 USER={{ oauth2_user }}
 GROUP=$USER
 
-STDOUT_LOG="/var/log/oauth2-proxy/$NAME.log"
-STDERR_LOG="/var/log/oauth2-proxy/$NAME.error.log"
+STDOUT_LOG="{{ oauth2_log_dir }}/$NAME.log"
+STDERR_LOG="{{ oauth2_log_dir }}/$NAME.error.log"
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0

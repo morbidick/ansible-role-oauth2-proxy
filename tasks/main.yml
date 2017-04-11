@@ -7,7 +7,7 @@
     home: false
     system: true
 
-- name: Create the directories for site specific configurations
+- name: Create application directory
   file:
     path: "{{ item }}"
     state: directory
@@ -15,20 +15,29 @@
     group: root
     mode: 0750
   with_items:
-     - "{{ oauth2_dir }}"
-     - "{{ oauth2_dir_tmp }}"
-     - "{{ oauth2_dir_log }}"
+    - "{{ oauth2_dir }}"
+    - "{{ oauth2_tmp_dir }}"
+    - "{{ oauth2_config_dir }}"
+
+- name: Create log directory
+  file:
+    path: "{{ oauth2_dir_log }}"
+    state: directory
+    owner: "{{ oauth2_user }}"
+    group: root
+    mode: 0750
+  when: oauth2_init_system == "sysv"
 
 - name: Download compressed oauth2 binary
   get_url:
-    url: "{{ oaut2_proxy_http }}"
-    sha256sum: "{{ oaut2_proxy_http_sha256 | default(omit) }}"
-    dest: "{{ oauth2_dir_tmp }}/{{ oauth2_compress_filename }}"
+    url: "{{ oauth2_proxy_http }}"
+    sha256sum: "{{ oauth2_proxy_http_sha256 | default(omit) }}"
+    dest: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
     owner: "{{ oauth2_user }}"
 
 - name: unarchive oauth2 binary
   unarchive:
-    src: "{{ oauth2_dir_tmp }}/{{ oauth2_compress_filename }}"
+    src: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
     dest: "{{ oauth2_dir }}/"
     creates: "{{ oauth2_dir }}/{{ oauth2_compress_filename }}"
     copy: no
