@@ -4,7 +4,7 @@
   user:
     name: "{{ oauth2_user }}"
     shell: "/bin/false"
-    home: false
+    createhome: false
     system: true
 
 - name: Create application directory
