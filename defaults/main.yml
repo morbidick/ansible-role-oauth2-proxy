@@ -1,31 +1,31 @@
 ---
 
-oauth2_proxy_http                        : "https://github.com/pusher/oauth2_proxy/releases/download/v3.1.0/oauth2_proxy-v3.1.0.linux-amd64.go1.11.tar.gz"
-oauth2_proxy_http_sha256                 : "adef7be37522b3a8b2a984402c565498da280c518d4d34ed3698274098d55472"
-oauth2_user                              : "oauth2"
-oauth2_dir                               : "/opt/oauth2_proxy"
-oauth2_tmp_dir                           : "{{ oauth2_dir }}/tmp"
-oauth2_log_dir                           : "/var/log/oauth2-proxy"
-oauth2_config_dir                        : "/etc/oauth2_proxy"
-oauth2_config_path                       : "{{ oauth2_config_dir }}/oauth2_config.cfg"
-oauth2_compress_filename                 : "{{ oauth2_proxy_http | basename }}"
-oauth2_version                           : "{{ oauth2_compress_filename |replace('.tar.gz', '') }}"
-oauth2_version_dir                       : "{{ oauth2_dir }}/{{ oauth2_version }}"
-oauth2_filename                          : "release/oauth2_proxy-linux-amd64"
-oauth2_init_system                       : "systemd" # could be `systemd`, `sysv` or `no` for no setup
-oauth2_identifier                        : "oauth2-proxy"
-oauth2_systemd_unit_path                 : "/etc/systemd/system/{{ oauth2_identifier }}.service"
+oauth2_proxy_http: "https://github.com/pusher/oauth2_proxy/releases/download/v3.1.0/oauth2_proxy-v3.1.0.linux-amd64.go1.11.tar.gz"
+oauth2_proxy_http_sha256: "adef7be37522b3a8b2a984402c565498da280c518d4d34ed3698274098d55472"
+oauth2_user: "oauth2"
+oauth2_dir: "/opt/oauth2_proxy"
+oauth2_tmp_dir: "{{ oauth2_dir }}/tmp"
+oauth2_log_dir: "/var/log/oauth2-proxy"
+oauth2_config_dir: "/etc/oauth2_proxy"
+oauth2_config_path: "{{ oauth2_config_dir }}/oauth2_config.cfg"
+oauth2_compress_filename: "{{ oauth2_proxy_http | basename }}"
+oauth2_version: "{{ oauth2_compress_filename |replace('.tar.gz', '') }}"
+oauth2_version_dir: "{{ oauth2_dir }}/{{ oauth2_version }}"
+oauth2_filename: "release/oauth2_proxy-linux-amd64"
+oauth2_init_system: "systemd" # could be `systemd`, `sysv` or `no` for no setup
+oauth2_identifier: "oauth2-proxy"
+oauth2_systemd_unit_path: "/etc/systemd/system/{{ oauth2_identifier }}.service"
 
 # See for all options https://raw.githubusercontent.com/bitly/oauth2_proxy/master/contrib/oauth2_proxy.cfg.example
 oauth2_proxy_config                      :
-    http_address                         : "127.0.0.1:5000"
-    upstreams                            : [ "127.0.0.1:6060" ]
-    provider                             : "github"
-    email_domains                        : "*"
-    cookie_secure                        : false
-    cookie_domain                        : "localhost:5000"
-    cookie_secret                        : "{{ 'COOK_SECRET' | b64encode }}"
-    client_id                            : "YOUR_CLIENT_ID"
-    client_secret                        : "CLIENT_SECERET"
+    http_address: "127.0.0.1:5000"
+    upstreams: [ "127.0.0.1:6060" ]
+    provider: "github"
+    email_domains: "*"
+    cookie_secure: false
+    cookie_domain: "localhost:5000"
+    cookie_secret: "{{ 'COOK_SECRET' | b64encode }}"
+    client_id: "YOUR_CLIENT_ID"
+    client_secret: "CLIENT_SECERET"
 
-oauth2_config_cmdline_args               : ""
+oauth2_config_cmdline_args: ""

@@ -1,16 +1,19 @@
 ---
 galaxy_info:
-  author: Adham Helal
+  author: morbidick
   description: An ansible role to install oauth2 proxy
-  company: Hellofresh
-
-  license: license (MIT)
-  min_ansible_version: 1.9
+  license: MIT
+  min_ansible_version: 2.4
   platforms:
   - name: Ubuntu
     versions:
     - trusty
-  categories:
+    - xenial
+  - name: Debian
+    versions:
+    - jessie
+    - stretch
+  galaxy_tags:
   - networking
 
 dependencies: []

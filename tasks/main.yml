@@ -85,4 +85,4 @@
     name: "{{ oauth2_identifier }}"
     state: "started"
     enabled: "yes"
-  when: oauth2_init_system != False
+  when: oauth2_init_system
