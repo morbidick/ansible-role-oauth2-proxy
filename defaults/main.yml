@@ -1,7 +1,7 @@
 ---
 
-oaut2_proxy_http                         : "https://github.com/pusher/oauth2_proxy/releases/download/v3.1.0/oauth2_proxy-v3.1.0.linux-amd64.go1.11.tar.gz"
-oaut2_proxy_http_sha256                  : "adef7be37522b3a8b2a984402c565498da280c518d4d34ed3698274098d55472"
+oauth2_proxy_http                        : "https://github.com/pusher/oauth2_proxy/releases/download/v3.1.0/oauth2_proxy-v3.1.0.linux-amd64.go1.11.tar.gz"
+oauth2_proxy_http_sha256                 : "adef7be37522b3a8b2a984402c565498da280c518d4d34ed3698274098d55472"
 oauth2_user                              : "oauth2"
 oauth2_dir                               : "/opt/oauth2_proxy"
 oauth2_tmp_dir                           : "{{ oauth2_dir }}/tmp"
