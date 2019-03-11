@@ -18,6 +18,7 @@
     - "{{ oauth2_dir }}"
     - "{{ oauth2_tmp_dir }}"
     - "{{ oauth2_config_dir }}"
+    - "{{ oauth2_version_dir }}"
 
 - name: Create log directory
   file:
@@ -38,16 +39,16 @@
 - name: unarchive oauth2 binary
   unarchive:
     src: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
-    dest: "{{ oauth2_dir }}/"
-    creates: "{{ oauth2_dir }}/{{ oauth2_compress_filename }}"
+    dest: "{{ oauth2_version_dir }}/"
+    creates: "{{ oauth2_version_dir }}/{{ oauth2_filename }}"
     copy: no
 
 - name: Create current symlink
   file:
-    src: "{{ oauth2_dir }}/{{ oauth2_filename }}"
+    src: "{{ oauth2_version_dir }}"
     dest: "{{ oauth2_dir }}/current"
     owner: "{{ oauth2_user }}"
-    mode: "0755"
+    mode: "0750"
     state: "link"
   notify:
     - oauth2-proxy restart

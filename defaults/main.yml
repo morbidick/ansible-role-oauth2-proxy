@@ -9,6 +9,8 @@ oauth2_log_dir                           : "/var/log/oauth2-proxy"
 oauth2_config_dir                        : "/etc/oauth2_proxy"
 oauth2_config_path                       : "{{ oauth2_config_dir }}/oauth2_config.cfg"
 oauth2_compress_filename                 : "{{ oauth2_proxy_http | basename }}"
+oauth2_version                           : "{{ oauth2_compress_filename |replace('.tar.gz', '') }}"
+oauth2_version_dir                       : "{{ oauth2_dir }}/{{ oauth2_version }}"
 oauth2_filename                          : "release/oauth2_proxy-linux-amd64"
 oauth2_init_system                       : "systemd" # could be `systemd`, `sysv` or `no` for no setup
 oauth2_identifier                        : "oauth2-proxy"
