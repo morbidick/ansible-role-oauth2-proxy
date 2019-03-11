@@ -5,4 +5,4 @@
     name: "{{ oauth2_identifier }}"
     state: restarted
     daemon_reload: yes
-  when: oauth2_init_system != False
+  when: oauth2_init_system
