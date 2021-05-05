@@ -1,11 +1,11 @@
 ---
-dist: trusty
+dist: focal
 sudo: required
 language: python
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install python-pip -qq
+  - sudo apt-get install python3-pip -qq
 
   # Allow running tasks as unprivileged users with travis CI
   # Reference: https://docs.ansible.com/ansible/become.html#becoming-an-unprivileged-user
