@@ -18,7 +18,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="A reverse proxy that provides authentication with Google, Github or other provider"
 NAME=`basename $0`
 DAEMON={{ oauth2_dir }}/current/{{ oauth2_filename }}
-DAEMON_ARGS="-config={{ oauth2_config_path }} {{ oauth2_config_cmdline_args }}"
+DAEMON_ARGS="{{ oauth2_config_param_prefix }}config={{ oauth2_config_path }} {{ oauth2_config_cmdline_args }}"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/oauth2-proxy
 USER={{ oauth2_user }}
