@@ -2,7 +2,7 @@
 ## https://github.com/bitly/oauth2_proxy
 ## https://github.com/bitly/oauth2_proxy/blob/master/contrib/oauth2_proxy.cfg.example
 
-{% for k,v in oauth2_proxy_config.iteritems() %}
+{% for k,v in oauth2_proxy_config.items() %}
 {% if v is string %}
 {{ k }} = "{{ v }}"
 {% else %}
