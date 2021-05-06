@@ -1,6 +1,7 @@
 ---
 
-oauth2_proxy_http: "https://github.com/oauth2-proxy/oauth2-proxy/releases/download/v7.1.3/oauth2-proxy-v7.1.3.linux-amd64.tar.gz"
+oauth2_proxy_version: "v7.1.3"
+oauth2_proxy_http: "https://github.com/oauth2-proxy/oauth2-proxy/releases/download/{{ oauth2_proxy_version }}/oauth2-proxy-{{ oauth2_proxy_version }}.linux-amd64.tar.gz"
 oauth2_proxy_http_sha256: "a491ca18059848c356935fe2ca9e665faafe4bba3ee1ecbac5a5f5f193195a82"
 oauth2_user: "oauth2"
 oauth2_dir: "/opt/oauth2_proxy"
@@ -12,7 +13,7 @@ oauth2_config_param_prefix: "--" # set to - for older versions
 oauth2_compress_filename: "{{ oauth2_proxy_http | basename }}"
 oauth2_version: "{{ oauth2_compress_filename |replace('.tar.gz', '') }}"
 oauth2_version_dir: "{{ oauth2_dir }}/{{ oauth2_version }}"
-oauth2_filename: "release/oauth2_proxy-linux-amd64"
+oauth2_filename: "oauth2-proxy-{{ oauth2_proxy_version }}.linux-amd64/oauth2-proxy"
 oauth2_init_system: "systemd" # could be `systemd`, `sysv` or `no` for no setup
 oauth2_identifier: "oauth2-proxy"
 oauth2_systemd_unit_path: "/etc/systemd/system/{{ oauth2_identifier }}.service"
