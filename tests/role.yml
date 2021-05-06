@@ -24,7 +24,7 @@
         provider: "github"
         email_domains: "*"
         cookie_secure: false
-        cookie_domain: "localhost:5000"
+        cookie_domains: "localhost:5000"
         cookie_secret: "{{ 'COOK_SECRET' | b64encode }}"
         client_id: "YOUR_CLIENT_ID"
         client_secret: "CLIENT_SECERET"
