@@ -55,7 +55,7 @@
     owner: "{{ oauth2_user }}"
 
 - name: Get expected sha256sum from downloaded file
-  command: "cat '{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename}}'"
+  command: "cat '{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}'"
   register: oauth_expected_sha256sum
   changed_when: False # we don't want this to be noticed as a change
 
