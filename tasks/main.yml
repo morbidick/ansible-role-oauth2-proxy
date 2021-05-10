@@ -32,7 +32,6 @@
 - name: Download compressed oauth2 binary
   get_url:
     url: "{{ oauth2_proxy_http }}"
-    sha256sum: "{{ oauth2_proxy_http_sha256 | default(omit) }}"
     dest: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
     owner: "{{ oauth2_user }}"
 
@@ -41,7 +40,30 @@
     src: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
     dest: "{{ oauth2_version_dir }}/"
     creates: "{{ oauth2_version_dir }}/{{ oauth2_filename }}"
-    copy: no
+    remote_src: yes
+
+- name: Get sha256sum of decompressed oauth2 binary
+  stat:
+    path: "{{ oauth2_version_dir }}/{{ oauth2_filename }}"
+    checksum_algorithm: "sha256"
+  register: oauth2_stat
+
+- name: Download oauth2 binary sha256sum
+  get_url:
+    url: "{{ oauth2_proxy_http_sha256sum }}"
+    dest: "{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}"
+    owner: "{{ oauth2_user }}"
+
+- name: Get expected sha256sum from downloaded file
+  command: "cat '{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}'"
+  register: oauth_expected_sha256sum
+  changed_when: False # we don't want this to be noticed as a change
+
+# oauth2-proxy provides the sha256sum of the decompressed binary, not the archive itself
+- name: Verify sha256sum of decompressed oauth binary
+  fail:
+    msg: "Failure, sha256sum of {{ oauth2_version_dir }}/{{ oauth2_filename }} is not correct."
+  when: oauth_expected_sha256sum.stdout is not match(oauth2_stat.stat.checksum)
 
 - name: Create current symlink
   file:
