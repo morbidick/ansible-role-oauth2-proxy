@@ -7,6 +7,8 @@ An ansible role to install and configure [oauth2 proxy](https://github.com/oauth
 ## Variables
 
 ```yaml
+
+oauth2_proxy_version                     : "v7.1.3"
 oauth2_user                              : "oauth2"
 oauth2_dir                               : "/opt/oauth2_proxy"
 oauth2_tmp_dir                           : "/opt/oauth2_proxy/tmp"
