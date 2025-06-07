@@ -101,6 +101,8 @@
       changed_when: false
       failed_when: false
       become: true
+      when:
+        - not is_container|bool
     - name: Validate log2
       ansible.builtin.assert:
         that: log2.rc != 0
