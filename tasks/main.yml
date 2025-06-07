@@ -9,6 +9,7 @@
        or ansible_virtualization_type == "containerd"
        or ansible_virtualization_type == "container"
       )
+    )
 
 - name: Create the daemon user
   user:
