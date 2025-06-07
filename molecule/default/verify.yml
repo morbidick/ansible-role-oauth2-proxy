@@ -1,0 +1,108 @@
+---
+
+- name: Verify oauth2-proxy setup
+  hosts: "{{ playbook_hosts | default('oauth2') }}"
+  vars:
+    oauth2_proxy_version: v7.1.3
+    bin: "/opt/oauth2_proxy/current/oauth2-proxy-v{{ oauth2_proxy_version }}.linux-amd64/oauth2-proxy"
+    config: "/etc/oauth2_proxy/oauth2_config.cfg"
+    ports:
+      - { h: localhost, p: 4180 }
+    url: http://localhost:4180
+    is_container: false
+  pre_tasks:
+    - name: Debug | var ansible_virtualization_type
+      ansible.builtin.debug:
+        var: ansible_virtualization_type
+    - name: Set fact is_container
+      ansible.builtin.set_fact:
+        is_container: true
+      when: >
+        (ansible_virtualization_type is defined and
+          (ansible_virtualization_type == "docker"
+           or ansible_virtualization_type == "containerd"
+           or ansible_virtualization_type == "container"
+          )
+        )
+  tasks:
+
+    - name: Check binary
+      ansible.builtin.stat:
+        path: "{{ bin }}"
+      register: bin1
+    - name: Validate command is present
+      ansible.builtin.assert:
+        that: bin1.stat.exists and bin1.stat.size != 0 and bin1.stat.mode == '0755'
+
+    - name: Check config file
+      ansible.builtin.stat:
+        path: "{{ config }}"
+      register: cfg1
+      become: true
+    - name: Validate config file is present
+      ansible.builtin.assert:
+        that: cfg1.stat.exists and cfg1.stat.size != 0
+
+    - name: Ensure process is running
+      ansible.builtin.command: pgrep -u oauth2 oauth2-proxy
+      register: ps1
+      changed_when: false
+      failed_when: false
+    - name: Validate ps output
+      ansible.builtin.assert:
+        that: ps1.stdout
+      when:
+        - not is_container|bool
+
+    - name: Ensure ports are listening
+      ansible.builtin.wait_for:
+        host: "{{ item.h }}"
+        port: "{{ item.p }}"
+        timeout: 10
+      with_items: "{{ ports }}"
+      when:
+        - not is_container|bool
+
+    - name: Fetch localhost endpoint
+      ansible.builtin.uri:
+        url: "{{ url }}"
+        validate_certs: false
+        return_content: true
+      register: web
+      failed_when: false
+    - name: Validate localhost endpoint
+      ansible.builtin.assert:
+        that: >
+          "'<title>Sign In</title>' in web.content"
+      when:
+        - not is_container|bool
+
+    - name: Fetch localhost endpoint ping
+      ansible.builtin.uri:
+        url: "{{ url }}/ping"
+        validate_certs: false
+        return_content: true
+      register: web2
+      failed_when: false
+    - name: Validate localhost endpoint ping
+      ansible.builtin.assert:
+        that:
+          - web2.status == 200
+          - "'OK' in web2.content"
+      when:
+        - not is_container|bool
+    - name: Check no error/warning in log
+      ansible.builtin.shell: |
+        set -o pipefail
+        journalctl -u oauth2-proxy -l --no-pager | grep -riE 'error|warning'
+      args:
+        executable: /bin/bash
+      register: log2
+      changed_when: false
+      failed_when: false
+      become: true
+    - name: Validate log2
+      ansible.builtin.assert:
+        that: log2.rc != 0
+      when:
+        - not is_container|bool
