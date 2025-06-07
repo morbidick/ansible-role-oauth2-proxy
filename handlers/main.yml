@@ -5,4 +5,6 @@
     name: "{{ oauth2_identifier }}"
     state: restarted
     daemon_reload: yes
-  when: oauth2_init_system is defined
+  when:
+    - oauth2_init_system is defined
+    - not is_container | bool

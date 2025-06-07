@@ -32,3 +32,5 @@ oauth2_proxy_config:
     client_secret: "CLIENT_SECERET"
 
 oauth2_config_cmdline_args: ""
+
+is_container: false

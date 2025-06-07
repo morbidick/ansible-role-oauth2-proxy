@@ -1,5 +1,15 @@
 ---
 
+- name: Set fact is_container
+  ansible.builtin.set_fact:
+    is_container: true
+  when: >
+    (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker"
+       or ansible_virtualization_type == "containerd"
+       or ansible_virtualization_type == "container"
+      )
+
 - name: Create the daemon user
   user:
     name: "{{ oauth2_user }}"
@@ -107,4 +117,6 @@
     name: "{{ oauth2_identifier }}"
     state: "started"
     enabled: "yes"
-  when: oauth2_init_system is defined
+  when:
+    - oauth2_init_system is defined
+    - not is_container | bool
