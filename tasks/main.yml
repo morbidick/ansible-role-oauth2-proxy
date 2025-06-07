@@ -1,109 +1,115 @@
 ---
 
 - name: Create the daemon user
-  user:
+  ansible.builtin.user:
     name: "{{ oauth2_user }}"
     shell: "/bin/false"
     createhome: false
     system: true
 
 - name: Create application directory
-  file:
-    path: "{{ item }}"
+  ansible.builtin.file:
+    path: "{{ item.d }}"
     state: directory
     owner: "{{ oauth2_user }}"
     group: root
-    mode: 0750
+    mode: "{{ item.m | default('0755') }}"
   with_items:
-    - "{{ oauth2_dir }}"
-    - "{{ oauth2_tmp_dir }}"
-    - "{{ oauth2_config_dir }}"
-    - "{{ oauth2_version_dir }}"
+    - { d: "{{ oauth2_dir }}" }
+    - { d: "{{ oauth2_tmp_dir }}" }
+    - { d: "{{ oauth2_config_dir }}", m: '0750' }
+    - { d: "{{ oauth2_version_dir }}" }
 
 - name: Create log directory
-  file:
+  ansible.builtin.file:
     path: "{{ oauth2_dir_log }}"
     state: directory
     owner: "{{ oauth2_user }}"
     group: root
-    mode: 0750
+    mode: "0750"
   when: oauth2_init_system == "sysv"
 
 - name: Download compressed oauth2 binary
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ oauth2_proxy_http }}"
     dest: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
+    mode: "0644"
     owner: "{{ oauth2_user }}"
 
-- name: unarchive oauth2 binary
-  unarchive:
+- name: Unarchive oauth2 binary
+  ansible.builtin.unarchive:
     src: "{{ oauth2_tmp_dir }}/{{ oauth2_compress_filename }}"
     dest: "{{ oauth2_version_dir }}/"
     creates: "{{ oauth2_version_dir }}/{{ oauth2_filename }}"
-    remote_src: yes
+    remote_src: true
+    owner: "{{ oauth2_user }}"
 
 - name: Get sha256sum of decompressed oauth2 binary
-  stat:
+  ansible.builtin.stat:
     path: "{{ oauth2_version_dir }}/{{ oauth2_filename }}"
     checksum_algorithm: "sha256"
   register: oauth2_stat
 
 - name: Download oauth2 binary sha256sum
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ oauth2_proxy_http_sha256sum }}"
     dest: "{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}"
+    mode: "0644"
     owner: "{{ oauth2_user }}"
 
 - name: Get expected sha256sum from downloaded file
-  command: "cat '{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}'"
+  ansible.builtin.command:
+    cmd: "cat '{{ oauth2_version_dir }}/{{ oauth2_sha256sum_filename }}'"
   register: oauth_expected_sha256sum
-  changed_when: False # we don't want this to be noticed as a change
+  changed_when: false # we don't want this to be noticed as a change
 
 # oauth2-proxy provides the sha256sum of the decompressed binary, not the archive itself
 - name: Verify sha256sum of decompressed oauth binary
-  fail:
+  ansible.builtin.fail:
     msg: "Failure, sha256sum of {{ oauth2_version_dir }}/{{ oauth2_filename }} is not correct."
   when: oauth_expected_sha256sum.stdout is not match(oauth2_stat.stat.checksum)
 
 - name: Create current symlink
-  file:
+  ansible.builtin.file:
     src: "{{ oauth2_version_dir }}"
     dest: "{{ oauth2_dir }}/current"
     owner: "{{ oauth2_user }}"
-    mode: "0750"
+    mode: "0755"
     state: "link"
   notify:
-    - oauth2-proxy restart
+    - Oauth2-proxy restart
 
 - name: Deploy init.d script
-  template:
+  ansible.builtin.template:
     src: "init.d.sh.j2.sh"
     dest: "/etc/init.d/{{ oauth2_identifier }}"
     mode: "0755"
   notify:
-    - oauth2-proxy restart
+    - Oauth2-proxy restart
   when: oauth2_init_system == "sysv"
 
 - name: Deploy systemd unit file
-  template:
+  ansible.builtin.template:
     dest: "{{ oauth2_systemd_unit_path }}"
     src: systemd.service.j2
+    mode: "0644"
+    owner: root
     # validate: "systemd-analyze verify %s" # see https://github.com/ansible/ansible/issues/19232
   notify:
-    - oauth2-proxy restart
+    - Oauth2-proxy restart
   when: oauth2_init_system == "systemd"
 
 - name: Deploy Config
-  template:
+  ansible.builtin.template:
     src: "config.j2"
     dest: "{{ oauth2_config_path }}"
     owner: "{{ oauth2_user }}"
     mode: "0600"
   notify:
-    - oauth2-proxy restart
+    - Oauth2-proxy restart
 
 - name: Service start
-  service:
+  ansible.builtin.service:
     name: "{{ oauth2_identifier }}"
     state: "started"
     enabled: "yes"

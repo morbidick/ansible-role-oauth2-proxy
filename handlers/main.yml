@@ -1,8 +1,8 @@
 ---
 
-- name: oauth2-proxy restart
-  service:
+- name: Oauth2-proxy restart
+  ansible.builtin.service:
     name: "{{ oauth2_identifier }}"
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
   when: oauth2_init_system is defined

@@ -1,19 +1,20 @@
 ---
 galaxy_info:
   author: morbidick
+  role_name: oauth2proxy
   description: An ansible role to install oauth2 proxy
   license: MIT
-  min_ansible_version: 2.4
+  min_ansible_version: '2.4'
   platforms:
-  - name: Ubuntu
-    versions:
-    - trusty
-    - xenial
-  - name: Debian
-    versions:
-    - jessie
-    - stretch
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
   galaxy_tags:
-  - networking
+    - networking
 
 dependencies: []
