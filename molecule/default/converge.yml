@@ -35,5 +35,9 @@
     - name: Debug | var ansible_virtualization_type
       ansible.builtin.debug:
         var: ansible_virtualization_type
+    - name: Ensure systemd is present
+      ansible.builtin.package:
+        name: systemd
+        state: present
   roles:
     - morbidick.oauth2proxy
