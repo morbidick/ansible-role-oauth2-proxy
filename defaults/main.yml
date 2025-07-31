@@ -22,7 +22,7 @@ oauth2_systemd_unit_path: "/etc/systemd/system/{{ oauth2_identifier }}.service"
 # See for all options https://raw.githubusercontent.com/bitly/oauth2_proxy/master/contrib/oauth2_proxy.cfg.example
 oauth2_proxy_config:
     http_address: "127.0.0.1:5000"
-    upstreams: [ "127.0.0.1:6060" ]
+    upstreams: ["127.0.0.1:6060"]
     provider: "github"
     email_domains: "*"
     cookie_secure: false
